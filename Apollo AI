@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apollo AI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .chat-container {
+            width: 400px;
+            margin: 40px auto;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .chat-body {
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 300px;
+        }
+
+        .message {
+            background-color: #f7f7f7;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .chat-footer {
+            padding: 10px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        #user-input {
+            width: 75%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        #send-btn {
+            width: 20%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>Apollo AI</h2>
+        </div>
+        <div class="chat-body" id="chat-body">
+            <div class="message">
+                <p>Welcome to our AI chatbot! Type a message to start.</p>
+            </div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="user-input" placeholder="Type a message...">
+            <button id="send-btn">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const chatBody = document.getElementById('chat-body');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+
+        // Basic AI responses
+        const responses = {
+            'hello': 'Hi! How can I assist you?',
+            'how are you?': 'I\'m doing well, thanks!',
+            'what is your name?':'I\'m Apollo AI.',
+            'what is your purpose?': 'I\'m here to provide information and answer questions.',
+            'what is sin?':'S\in is doing your own will.',
+            'what is serpentseed?':'S\erpentSeed is spiritual d.n.a of Satan,Lucifer the Devil that camouflaging in our will or spirit of disobedience to the Fathers Will that we inherit from our first parents Adam and Eve when they disobeyed Gods command in the Garden of Eden.',
+            'what is salvation?':'S\alvation is total coming back to the Will of God by Repentance.',
+            'what is repentance?':'R\epentance is surrendering our own will our serpentseed and made an agreement to God that says Father from now on not my will but Your Will be done in my life.',
+            'what is righteousseed?':'R\ighteousseed is spiritual d.n.a of God or spirit of obedience to the Fathers Will that is coming from our Almighty Father our Lord JesusChrist the Creator of All through His Appointed Son Pastor Apollo C. Quiboloy.',
+            'what is the three components of man?':'T\he Three Components of Man is Body is connection to the ground where it belongs,Soul connection to the surroundings and our relatives through our five senses and Spirit connection to the one created us it is coming from the Law or Words of God.',
+            'what is the image of god in man?':'T\he Image of God in man is his freedom of choice.',
+            'who is the created son of god?':'T\he Created Son of God is Adam.',
+            'what is the mission of the created son of god?':'T\he Mission of Created Son of God is to became the Temple or Dwelling Place of God and Dominion over the Fathers Creation.',
+            'who is the begotten son of god?':'T\he Begotten Son of God is JesusChrist.',
+            'what is the mission of the begotten son of god?':'T\he Mission of the Begotten Son of God is to redeem back what was lost by our first parents Adam and Eve the Sonship and Kingship from usurper Satan,Lucifer the Devil.',
+            'who is the appointed son of god?':'T\he Appointed Son of God is Pastor Apollo C. Quiboloy.',
+            'what is the mission of the appointed son of god?':'T\he Mission of the Appointed Son of God is to inherit all things from the Father Almighty our Lord JesusChrist the Creator of All the Sonship and Kingship that was lost by our first parents Adam and Eve by disobedience that was redeem back by our Alimghty Father our Lord JesusChrist from the hands of usurper Satan,Lucifer the Devil and Complete the Works of Salvation of the Father in man.',
+            'what is sonship?':'S\onship means Temple or Dwelling place of God.',
+            'what is kingship?':'K\ingship means ruler over the Fathers Creation.',
+            'what is the three pillars of kingdom revelations?':'T\he Three Pillars of Kingdom Revelations is Spiritual Revolution,Financial Revolution and Revolution of Excellence.',
+            'what is spiritual revolution?':'S\piritual Revolution is dethroning the spirit of disobedience to the Fathers Will and enthroning the spirit of obedience to the Fathers Will and the key of it is Repentance and the fruits of it is Souls.',
+            'what is financial revolution?':'F\inancial Revolution is dethroning the spirit of poverty,greediness,selfishness,laziness and doubt and enthroning the spirit of abundance,prosperity,love,compassion,industry and faith and the key of it is giving and the fruits of it is blessings.',
+            'what is revolution of excellence?':'R\evolution of Excellence is dethroning the spirit of ignorance,stupidity,lack of knowledge and misunderstanding and enthroning the spirit of wisdom,knowledge and understanding and the key of is fear of the Lord and the fruits of it is talents.',
+            'what is tithes?':'T\ithes is tenth percent of your income in a week it is commandeth of God to give it or else you will be called a thief.It symbolize the land where you sow your seeds(offering).Ex:P1000 tithes is P100.',
+            'what is offering?':'O\ffering is ninty percent of your income in a week it is out of your love to give it.It symbolize the seeds that you sown in the land(tithes).Ex:P900 is your offering.',
+            'what is the name of father and mother of pastor apollo c. quiboloy?':'T\he name of Father and Mother of Pastor Apollo C. Quiboloy is Jose T. Quiboloy and Maria Carreon.',
+            'what is the date of birth of the appointed son pastor apollo c. quiboloy?':'T\he Birthdate of the Appointed Son Pastor Apollo C. Quiboloy is April 25,1950.',
+            'where is the place of birth of the appointed son of god pastor apollo c. quiboloy?':'T\he Place of Birth of the Appointed Son Pastor Apollo C. Quiboloy is somewhere in the Foothills of Mount Apo Tamayong Davao City Philippines.',
+            'how many children does jose t. quiboloy and maria carreon have and in his brothers and sisters what is the position of pastor apollo c. quiboloy in his siblings?':'J\ose and Maria Quiboloy have nine children and Pastor Apollo C. Quiboloy is the youngest among his siblings.',
+            'what is the three sons in the storyline of salvation?':'T\he Three Sons in the Storyline of Salvation is Created Son,Begotten Son and Appointed Son.',
+            'what is the three ages in the storyline of salvation?':'T\he Three Ages in the Storyline of Salvation is Jewish Age,Church Age and Kingdom Age.',
+            'body+soul?':'B\ody+Soul is Physical Life.',
+            'body+soul+spirit?':'B\ody+Soul+Spirit is Spiritual Life.',
+            'who is pastor apollo c. quiboloy?':'P\astor Apollo C. Quiboloy is the Appointed Son of God.He was born on April 25,1950 at the foothills of Mount Apo Tamayong Davao City Philippines.His Father is Jose T. Quiboloy and His Mother is Maria Carreon and  he is the ninth child the youngest child of Jose Quiboloy and Maria Carreon.His calling is the same as Moses and Paul.He was called by God in South Korea in 1973 saying to him in audible voice Gamiton ta Ka or I will use you in Cebuano and brought by the hand of orchestration by the Almighty Father on Two Mountains in Six Years in Mount Matutum Kitbog South Cotabato and Mount Apo Tamayong Davao City Philippines.There he was taught and trained by the Almighty Father our Lord JesusChrist in the Gentile Setting and test by the Devil and overcame the Devil and Anointed and Appointed by God to be a Son of God in these last days.Where God dwells and speaking to the people of the world bringing the message of repentance,obedience,grow in obedience to do the Fathers Will and become Sons and Daughters of God just like him',
+            'what is the threefold ministry of the appointed son of god?':'T\he Threefold Ministry of the Appointed Son of God is Mosaic,Solomonic and Prophetic.',
+            'what is mosaic ministry of the appointed son of god?':'T\he Mosaic Ministry of the Appointed Son of God is to free men from the spiritual bondage from sin.',
+            'what is the solomonic ministry of the appointed son of god?':'T\he Solomonic Ministry of the Appointed Son is being the Temple or Tabernacle or Dwelling place of God where God dwells.',
+            'what is the prophetic ministry of the appointed son of god?':'T\he Prophetic Ministry of the Appointed Son of God is what He says will always happen in due time.',
+            'default': 'Sorry, I didn\'t understand that.'
+        };
+
+        sendBtn.addEventListener('click', () => {
+            const userMessage = userInput.value.trim();
+            if (userMessage !== '') {
+                displayMessage('user', userMessage);
+                const response = getResponse(userMessage.toLowerCase());
+                setTimeout(() => {
+                    displayMessage('ai', response);
+                }, 1000);
+                userInput.value = '';
+            }
+        });
+
+        function getResponse(message) {
+            return responses[message] || responses['default'];
+        }
+
+        function displayMessage(type, message) {
+            const msgDiv = document.createElement('div');
+            msgDiv.classList.add('message');
+            msgDiv.innerHTML = `<p>${message}</p>`;
+            if (type === 'ai') {
+                msgDiv.style.background = '#28a745';
+                msgDiv.style.color = '#fff';
+            }
+            chatBody.appendChild(msgDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+    </script>
+</body>
+</html>
+
